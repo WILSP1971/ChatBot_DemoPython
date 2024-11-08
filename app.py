@@ -79,27 +79,22 @@ def recibir_mensajes(req):
         value = changes['value']
         objeto_mensaje = value['messages']
 
-
         if objeto_mensaje:
            messages = objeto_mensaje[0]
 
            if "type" in messages:
                tipo = messages["type"]
-                #agregar_mensajes_log(json.dumps(messages))
-
+               notelefono = messages["from"]
 
                if tipo == "interactive":
                    tipo_interactivo = messages["interactive"]["type"]
+                   
+                   if (tipo_interactivo == "button_reply"):
 
-                   if (tipo_interactivo == "button_reply") or (tipo_interactivo == "reply"):
-                     notelefono = messages["from"]
-                     if (tipo_interactivo == "button_reply"):
-                           text = messages["interactive"]["button_reply"]["id"]
-                     elif (tipo_interactivo == "reply"):
-                            text = messages["interactive"]["reply"]["id"]
+                     text = messages["interactive"]["button_reply"]["id"]
 
                      if ("btn_cedsi" in text) or ("btn_cedno" in text) :
-                          noidentificacion = messages["interactive"]["footer"]["text"]
+                          noidentificacion = messages["interactive"]["button_reply"]["payload"]
                           mostrar_citas(noidentificacion,notelefono,text)
                      else:
                           enviar_mensaje_whatapps(text,notelefono)
@@ -111,8 +106,6 @@ def recibir_mensajes(req):
 
                if "text" in messages:
                     text = messages["text"]["body"] ## Cuerpo del Mensaje
-                    notelefono = messages["from"] ## No Telefono
-                    
                     LenCedula = len(text)
                     IsNumeroCedula = text.isdigit()
 
@@ -255,14 +248,16 @@ def traer_datoscedula(nocedula,number):
                             "type": "reply",
                             "reply": {
                                 "id": "btn_cedsi",
-                                "title": "SI"
+                                "title": "SI",
+                                 "payload": nocedula
                             }
                         },
                         {
                             "type": "reply",
                             "reply": {
                                 "id": "btn_cedno",
-                                "title": "NO"
+                                "title": "NO",
+                                "payload": ""
                             }
                         }
                     ]
