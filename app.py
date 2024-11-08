@@ -72,65 +72,64 @@ def verificar_token(req):
 def recibir_mensajes(req):
     req = request.get_json()
     agregar_mensajes_log(json.dumps(req))
-    return jsonify({'message':'EVENT_RECEIVED'})
 
-    # try:  
-    #     entry = req['entry'][0]
-    #     changes = entry['changes'][0]
-    #     value = changes['value']
-    #     objeto_mensaje = value['messages']
-
-
-    #     if objeto_mensaje:
-    #        messages = objeto_mensaje[0]
-
-    #        if "type" in messages:
-    #            tipo = messages["type"]
-    #             #agregar_mensajes_log(json.dumps(messages))
+    try:  
+        entry = req['entry'][0]
+        changes = entry['changes'][0]
+        value = changes['value']
+        objeto_mensaje = value['messages']
 
 
-    #            if tipo == "interactive":
-    #                tipo_interactivo = messages["interactive"]["type"]
+        if objeto_mensaje:
+           messages = objeto_mensaje[0]
 
-    #                if (tipo_interactivo == "button_reply") or (tipo_interactivo == "reply"):
-    #                  notelefono = messages["from"]
-    #                  if (tipo_interactivo == "button_reply"):
-    #                        text = messages["interactive"]["button_reply"]["id"]
-    #                  elif (tipo_interactivo == "reply"):
-    #                         text = messages["interactive"]["reply"]["id"]
+           if "type" in messages:
+               tipo = messages["type"]
+                #agregar_mensajes_log(json.dumps(messages))
 
-    #                  if ("btn_cedsi" in text) or ("btn_cedno" in text) :
-    #                       noidentificacion = messages["interactive"]["footer"]["text"]
-    #                       mostrar_citas(noidentificacion,notelefono,text)
-    #                  else:
-    #                       enviar_mensaje_whatapps(text,notelefono)
+
+               if tipo == "interactive":
+                   tipo_interactivo = messages["interactive"]["type"]
+
+                   if (tipo_interactivo == "button_reply") or (tipo_interactivo == "reply"):
+                     notelefono = messages["from"]
+                     if (tipo_interactivo == "button_reply"):
+                           text = messages["interactive"]["button_reply"]["id"]
+                     elif (tipo_interactivo == "reply"):
+                            text = messages["interactive"]["reply"]["id"]
+
+                     if ("btn_cedsi" in text) or ("btn_cedno" in text) :
+                          noidentificacion = messages["interactive"]["footer"]["text"]
+                          mostrar_citas(noidentificacion,notelefono,text)
+                     else:
+                          enviar_mensaje_whatapps(text,notelefono)
                     
-    #                elif tipo_interactivo == "list_reply":
-    #                     text = messages["interactive"]["list_reply"]["id"]
-    #                     notelefono = messages["from"]
-    #                     enviar_mensaje_whatapps(text,notelefono)
+                   elif tipo_interactivo == "list_reply":
+                        text = messages["interactive"]["list_reply"]["id"]
+                        notelefono = messages["from"]
+                        enviar_mensaje_whatapps(text,notelefono)
 
-    #            if "text" in messages:
-    #                 text = messages["text"]["body"] ## Cuerpo del Mensaje
-    #                 notelefono = messages["from"] ## No Telefono
+               if "text" in messages:
+                    text = messages["text"]["body"] ## Cuerpo del Mensaje
+                    notelefono = messages["from"] ## No Telefono
                     
-    #                 LenCedula = len(text)
-    #                 IsNumeroCedula = text.isdigit()
+                    LenCedula = len(text)
+                    IsNumeroCedula = text.isdigit()
 
-    #                 if IsNumeroCedula:
-    #                     if LenCedula>=7:
-    #                         noidentificacion = text
-    #                         traer_datoscedula(text,notelefono)
-    #                     else:
-    #                         enviar_mensaje_whatapps(text,notelefono)
-    #                 else:
-    #                     enviar_mensaje_whatapps(text,notelefono)
+                    if IsNumeroCedula:
+                        if LenCedula>=7:
+                            noidentificacion = text
+                            traer_datoscedula(text,notelefono)
+                        else:
+                            enviar_mensaje_whatapps(text,notelefono)
+                    else:
+                        enviar_mensaje_whatapps(text,notelefono)
 
-    #     #Guardar Log en la BD
-    #     #agregar_mensajes_log(json.dumps(messages))
-
-    # except Exception as e:
-    #     return jsonify({'error':'ERROR'})
+        #Guardar Log en la BD
+        #agregar_mensajes_log(json.dumps(messages))
+        return jsonify({'message':'EVENT_RECEIVED'})
+    except Exception as e:
+        return jsonify({'error':'ERROR'})
 
 ## Envio de Mensajes Respuesta a Whatapps
 def enviar_mensaje_whatapps(texto,number):
