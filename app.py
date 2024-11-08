@@ -75,11 +75,12 @@ def recibir_mensajes(req):
 
     try:  
         req = request.get_json()
+        agregar_mensajes_log(json.dumps(req))  #objeto_mensaje[0]
         entry = req['entry'][0]
         changes = entry['changes'][0]
         value = changes['value']
         objeto_mensaje = value['messages']
-        agregar_mensajes_log(json.dumps(objeto_mensaje[0]))
+
 
         if objeto_mensaje:
            messages = objeto_mensaje[0]
@@ -219,6 +220,7 @@ def traer_datoscedula(nocedula,number):
     params = {"CodigoEmp": "C30", "criterio": nocedula}
     responget = requests.get(api_url, params=params)
     arraydata = responget.json()
+    agregar_mensajes_log(json.dumps(arraydata)) 
     if arraydata == []:
         data={
             "messaging_product": "whatsapp",
@@ -290,7 +292,7 @@ def mostrar_citas(nocedula,number,tipo):
         params = {"CodigoEmp": "C30", "criterio": nocedula}
         responget = requests.get(api_url, params=params)
         arraydata = responget.json()
-
+        agregar_mensajes_log(json.dumps(arraydata)) 
         if arraydata == []:
              data={
                 "messaging_product": "whatsapp",
