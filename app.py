@@ -131,7 +131,7 @@ def recibir_mensajes(req):
 
         return jsonify({'message':'EVENT_RECEIVED'})
     except Exception as e:
-        return jsonify('error':'ERROR')
+        return jsonify({'error':'ERROR'})
 
 
 ## Envio de Mensajes Respuesta a Whatapps
