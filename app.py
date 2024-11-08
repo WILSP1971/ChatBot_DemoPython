@@ -133,7 +133,6 @@ def recibir_mensajes(req):
     except Exception as e:
         return jsonify({'error':'ERROR'})
 
-
 ## Envio de Mensajes Respuesta a Whatapps
 def enviar_mensaje_whatapps(texto,number):
     texto = texto.lower()
