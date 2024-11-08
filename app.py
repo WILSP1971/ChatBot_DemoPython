@@ -70,12 +70,10 @@ def verificar_token(req):
     
 ## Recepcion de Mensajes WhatApps
 def recibir_mensajes(req):
-#    req = request.get_json()
-#    agregar_mensajes_log(json.dumps(req))
+    req = request.get_json()
+    agregar_mensajes_log(json.dumps(req))
 
     try:  
-        req = request.get_json()
-        agregar_mensajes_log(json.dumps(req))  #objeto_mensaje[0]
         entry = req['entry'][0]
         changes = entry['changes'][0]
         value = changes['value']
