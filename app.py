@@ -72,6 +72,7 @@ def verificar_token(req):
 def recibir_mensajes(req):
     req = request.get_json()
     agregar_mensajes_log(json.dumps(req))
+    return jsonify({'message':'EVENT_RECEIVED'})
 
     # try:  
     #     entry = req['entry'][0]
@@ -127,7 +128,7 @@ def recibir_mensajes(req):
 
     #     #Guardar Log en la BD
     #     #agregar_mensajes_log(json.dumps(messages))
-    return jsonify({'message':'EVENT_RECEIVED'})
+
     # except Exception as e:
     #     return jsonify({'error':'ERROR'})
 
