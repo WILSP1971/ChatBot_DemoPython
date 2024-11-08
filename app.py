@@ -61,7 +61,7 @@ def verificar_token(req):
     challenge = req.args.get('hub.challenge')
 
     #and challenge
-    if token == TOKEN_TWSCODE:
+    if challenge and token == TOKEN_TWSCODE:
         return challenge
     else:
         return jsonify({'error':'TOKEN INVALIDO'}),401
